@@ -1,0 +1,19 @@
+# --- App runtime ---
+fastapi>=0.110.0
+uvicorn[standard]>=0.27.0
+pydantic>=2.6.0
+python-dotenv>=1.0.0
+
+# --- Auth / Security ---
+python-jose[cryptography]>=3.3.0
+passlib[bcrypt]>=1.7.4
+
+# --- Data ---
+SQLAlchemy>=2.0.0
+alembic>=1.13.0
+
+# --- Tooling / Quality ---
+ruff>=0.5.0
+mypy>=1.8.0
+pytest>=8.0.0
+httpx>=0.26.0
