@@ -1,65 +1,77 @@
 # cloud-native-fullstack-starter
 
-A production-minded **ALL-in-one** repo that signals **Frontend + Full-Stack + Cloud + DevSecOps**:
+A production-minded **ALL-in-one** repository that demonstrates **Frontend + Full-Stack + Cloud + DevSecOps** skills using modern, real-world tooling and workflows.
 
-- **Frontend:** React + Vite + TypeScript + Tailwind
-- **Backend:** FastAPI + JWT Auth + SQLAlchemy
-- **CI/CD:** GitHub Actions (lint/test/build) + Semantic Versioning releases
-- **AWS IaC:** Terraform (SNS + GitHub OIDC role) and **S3 + CloudFront** frontend hosting
+This project shows how to design, build, test, deploy, and operate a cloud-native application end-to-end using **React**, **FastAPI**, **GitHub Actions**, and **AWS (S3, CloudFront, ECS Fargate)** — all provisioned via **Terraform** and secured with **OIDC (no static AWS credentials)**.
 
-## Quick start (local)
+---
+
+## 🧭 Architecture Overview
+
+![Cloud-Native Full-Stack Architecture](./docs/cloud_native_fullstack_architecture.png)
+
+**At a glance:**
+- **Frontend:** React SPA hosted on S3 and delivered globally via CloudFront
+- **Backend:** FastAPI API running on ECS Fargate behind an Application Load Balancer
+- **Auth:** JWT-based authentication
+- **CI/CD:** GitHub Actions for linting, testing, builds, releases, and deployments
+- **IaC:** Terraform for AWS infrastructure (SNS, IAM OIDC, S3, CloudFront, ECS)
+
+---
+
+## 🔁 Request → Auth → Response Flow
+
+![Request → Auth → Response](./docs/cloud_native_fullstack_sequence.png)
+
+**Flow summary:**
+1. Browser loads the React app from CloudFront
+2. React makes API calls to the backend via ALB
+3. FastAPI validates JWT tokens
+4. Backend reads/writes data
+5. JSON response is returned to the frontend
+
+---
+
+## 🧱 Tech Stack
+
+### Frontend
+- React
+- Vite
+- TypeScript
+- Tailwind CSS
+
+### Backend
+- FastAPI
+- JWT Authentication
+- SQLAlchemy
+- Pytest / Ruff / Mypy
+
+### CI/CD & DevSecOps
+- GitHub Actions (CI, CD, Releases)
+- Semantic Versioning (semantic-release)
+- OIDC-based AWS access (no long-lived keys)
+- SNS notifications on pipeline status
+
+### Cloud & Infrastructure
+- AWS S3 + CloudFront (frontend hosting)
+- AWS ECS Fargate + ALB (backend API)
+- AWS ECR (container images)
+- Terraform (Infrastructure as Code)
+
+---
+
+## 🚀 Quick Start (Local Development)
 
 ### Backend (dev)
 ```bash
 cd backend
 python -m venv .venv
-# Windows: .venv\Scripts\activate
-# macOS/Linux:
+# Windows
+.venv\Scripts\activate
+# macOS / Linux
 source .venv/bin/activate
+
 pip install -r requirements.txt
 uvicorn app.main:app --reload
-```
-
-### Frontend (dev)
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-Frontend reads `VITE_API_BASE_URL` (defaults to `http://localhost:8000`).
-
-## Terraform
-
-```bash
-cd infra/terraform
-terraform init
-terraform apply -var="github_org=rsantiago76" -var="github_repo=cloud-native-fullstack-starter"
-```
-
-After apply, set GitHub Secrets:
-- `AWS_ROLE_TO_ASSUME` (terraform output)
-- `AWS_REGION` = `us-east-1`
-- `SNS_TOPIC_ARN` (terraform output)
 
 
-## Deploy Backend (ECS Fargate)
-
-1) Provision AWS resources:
-```bash
-cd infra/terraform
-terraform init
-terraform apply
-```
-
-2) Update the ECS task definition template once:
-- Edit `infra/ecs/taskdef.json` and replace `REPLACE_EXECUTION_ROLE_ARN` and `REPLACE_TASK_ROLE_ARN` with Terraform outputs.
-
-3) Set GitHub Secrets:
-- `AWS_REGION` = `us-east-1`
-- `AWS_BACKEND_DEPLOY_ROLE_TO_ASSUME` = `github_actions_backend_deploy_role_arn`
-- `ECR_REPOSITORY_URL` = `backend_ecr_repository_url`
-- `ECS_CLUSTER_NAME` = `backend_ecs_cluster_name`
-- `ECS_SERVICE_NAME` = `backend_ecs_service_name`
-
-Then push to `main` (or run workflow manually) to deploy.
