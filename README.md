@@ -21,7 +21,8 @@ This project shows how to design, build, test, deploy, and operate a cloud-nativ
 
 ## 🔁 Request → Auth → Response Flow
 
-![Request → Auth → Response](./docs/cloud_native_fullstack_sequence.png)
+<img width="2210" height="1010" alt="cloud_native_fullstack_sequence" src="https://github.com/user-attachments/assets/cb8b920a-e357-4e7a-a599-36ae58e0d886" />
+
 
 **Flow summary:**
 1. Browser loads the React app from CloudFront
