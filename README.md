@@ -8,7 +8,8 @@ This project shows how to design, build, test, deploy, and operate a cloud-nativ
 
 ## 🧭 Architecture Overview
 
-![Cloud-Native Full-Stack Architecture](./docs/cloud_native_fullstack_architecture.png)
+<img width="2216" height="1318" alt="cloud_native_fullstack_architecture" src="https://github.com/user-attachments/assets/26d4afb8-9848-40f6-9fe3-4e3a642b2a75" />
+
 
 **At a glance:**
 - **Frontend:** React SPA hosted on S3 and delivered globally via CloudFront
